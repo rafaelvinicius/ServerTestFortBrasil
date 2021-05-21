@@ -302,10 +302,16 @@ function verifyJWT(req, res, next){
 }
 
 
-//Cadastrar
+//Buscar
 app.post('/Buscar', async (req, res, next) => {
 
-  var tb_local = conn.collection('tb_local');
-  var RazaoSocial = req.body.c_razao_social;
+  var tb_local = conn.collection('tb_local'); 
+
+  await tb_local.find({"c_razao_social": new RegExp(req.body.c_busca, "i") }, {}).toArray(function(err, result) {
+  if (err) throw err;
+    if (result) {
+      return res.json(result);
+    }
+  });
 
 });
